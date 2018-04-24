@@ -1,0 +1,11 @@
+*.o
+*.a
+*.d
+*.gcda
+*.gcno
+tags
+core
+core.*
+*.un~
+*.swp
+bno055-i2c-example

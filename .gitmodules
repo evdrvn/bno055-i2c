@@ -1,0 +1,7 @@
+[submodule "example/ext/civetweb"]
+	path = example/ext/civetweb
+	url = https://github.com/civetweb/civetweb.git
+	branch = 1.9
+[submodule "example/ext/evdsptc"]
+	path = example/ext/evdsptc
+	url = https://github.com/evdrvn/evdsptc

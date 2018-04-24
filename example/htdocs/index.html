@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <script src="three.min.js"></script>
+        <script>
+            window.addEventListener('DOMContentLoaded', init);
+            var roll = 0; 
+            var pitch = 0; 
+            var yaw = 0;
+            var msgcnt = 0;
+            function load() {
+                const wsproto = 'ws:';
+                connection = new WebSocket(wsproto + '//' + window.location.host + '/websocket');
+                websock_text_field = document.getElementById('websock_text_field');
+                connection.onmessage = function (e) { 
+                    websock_text_field.innerHTML=e.data;
+                    json = JSON.parse(e.data);
+                    roll = json.roll / 180 * Math.PI;
+                    pitch = json.pitch / 180 * Math.PI;
+                    yaw = json.yaw / 180 * Math.PI;
+                    if(msgcnt > 20 * 10){
+                        msgcnt = 0;
+                        connection.send("heart beat");
+                    }else{
+                        msgcnt = msgcnt + 1;
+                    }
+                };
+                connection.onerror = function (error) { alert('WebSocket error'); connection.close(); };
+            }
+            function init() {
+                const width = 800;
+                const height = 450;
+            
+                const renderer = new THREE.WebGLRenderer({
+                    antialias: true,
+                    canvas: document.querySelector('#myCanvas')
+                });
+                renderer.setPixelRatio(window.devicePixelRatio);
+                renderer.setSize(width, height);
+                renderer.shadowMap.enabled = true;
+
+                const scene = new THREE.Scene();
+
+                const camera = new THREE.PerspectiveCamera(45, width / height);
+                camera.position.set(-400, 0, 250);
+                camera.rotation.y = - Math.PI / 3;
+                camera.rotation.z = - Math.PI / 2;
+
+                const floor = new THREE.Mesh(
+                    new THREE.BoxGeometry(2000, 2000, 0.1),
+                    new THREE.MeshStandardMaterial({color: 0x808080, roughness: 0.0}));
+                floor.receiveShadow = true;
+                scene.add(floor);
+
+                const material = new THREE.MeshStandardMaterial( { color: 0xff0000, roughness:0.0 } );
+                const torus = new THREE.Mesh( new THREE.TorusGeometry( 50, 10, 60, 60, Math.PI * 1.9 ), material );
+                torus.position.set(0, 0, 100);
+                torus.castShadow = true;
+                torus.eulerOrder='ZYX' 
+                scene.add( torus );
+
+                const light = new THREE.SpotLight(0xffffff, 2, 0, -Math.PI / 3, 0.8, 0.8);
+                light.position.set(-50, 0, 400);
+                light.target = torus;
+               	light.castShadow = true;
+                scene.add(light);
+
+                tick();
+            
+                function tick() {
+                    requestAnimationFrame(tick);
+            
+                    torus.rotation.x = roll;
+                    torus.rotation.y = pitch;
+                    torus.rotation.z = yaw;
+            
+                    renderer.render(scene, camera);
+                }
+            }
+        </script>
+    </head>
+    <body onload="load()">
+        <div id='websock_text_field'>No websocket connection yet</div>
+        <canvas id="myCanvas"></canvas>
+    </body>
+</html>

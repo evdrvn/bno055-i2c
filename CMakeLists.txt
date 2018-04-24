@@ -1,0 +1,8 @@
+  cmake_minimum_required(VERSION 2.8)
+  set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Build Type")
+  add_definitions("-Wall")
+  add_library(bno055-i2c-static STATIC src/bno055-i2c.c)
+  add_library(bno055-i2c-shared SHARED src/bno055-i2c.c)
+  set_target_properties(bno055-i2c-static PROPERTIES OUTPUT_NAME "bno055-i2c")
+  set_target_properties(bno055-i2c-shared PROPERTIES OUTPUT_NAME "bno055-i2c")
+  set_target_properties(bno055-i2c-shared PROPERTIES IMPORT_SUFFIX "_import.lib")
