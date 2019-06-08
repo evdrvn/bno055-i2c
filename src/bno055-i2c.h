@@ -201,6 +201,7 @@ typedef struct
 
 extern int bno055_open(bno055_conn_t* conn, const char* i2cdev, uint8_t address, int timeout_10ms);
 extern int bno055_init(bno055_conn_t* conn, uint8_t st_trigger, bno055_param_t* params, uint8_t params_num);
+extern void bno055_setmode(bno055_conn_t* conn, bno055_opmode_t mode);
 extern int bno055_writebytes(bno055_conn_t* conn, uint8_t *data, uint8_t count);
 extern int bno055_readbytes(bno055_conn_t* conn, uint8_t reg, uint8_t *dest, uint8_t count);
 extern int bno055_readcalibstat(bno055_conn_t* conn, uint8_t* data);

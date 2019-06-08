@@ -249,7 +249,7 @@ int main(int argc, char *argv[]){
     mgctx = mg_start(NULL, 0, options);
  
     if(argc > 1) dev = argv[1];
-    if(0 > bno055_open(&bno055_conn, dev, BNO055_ADDRESS_B, 2)) error("open error", dev);
+    if(0 > bno055_open(&bno055_conn, dev, BNO055_ADDRESS_A, 2)) error("open error", dev);
 
     connlist[0] = &bno055_conn;
 
