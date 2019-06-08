@@ -3,7 +3,7 @@ a user-space driver library of BNO055 Orientation 9-Axis Sensor.
 
 ## Overview
 
-* roll-pich-yaw euler angle orientation is obtainded from quaternion.
+* x-y-z euler angle orientation is obtainded from quaternion.
 * linear acceleration can also be obrained.
 * 100 Hz control cycle can be achieved by applying the preempt-rt patch.
 
